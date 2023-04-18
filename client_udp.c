@@ -9,10 +9,11 @@ void printMenu(){
 	printf( "-------------------------\n");
 	printf( "1. Add Entry\n");
 	printf( "2. Search with ID\n");
+	printf( "4. Display Database\n");
 	printf( "-------------------------\n");
 }
 
-void main(int argc, char **argv) {
+int main(int argc, char **argv) {
 	int s, server_address_size;
 	unsigned short port;
 	struct sockaddr_in server;
@@ -41,6 +42,29 @@ void main(int argc, char **argv) {
 	scanf("%d", &num);
 	sendto(s, &num, sizeof(num), 0, (struct sockaddr *)&server, server_address_size);
 	
+	if (num == 4){
+		int size;
+		recvfrom(s, &size, sizeof(size), 0, (struct sockaddr *)&server, &server_address_size);
+		int j;
+		for (j = 0; j < size; j++){
+			int id; 
+			int score;
+			char msgfName[50];
+			char msglName[50];
+			int order = j + 1;
+			
+			recvfrom(s, &id, sizeof(id), 0, (struct sockaddr *)&server, &server_address_size);
+			recvfrom(s, msgfName, sizeof(msgfName), 0, (struct sockaddr *)&server, &server_address_size);
+			recvfrom(s, msglName, sizeof(msglName), 0, (struct sockaddr *)&server, &server_address_size);
+			recvfrom(s, &score, sizeof(score), 0, (struct sockaddr *)&server, &server_address_size);
+			
+			printf("%d .", order);
+			printf("%s ", msgfName);
+			printf("%s \t", msglName);
+			printf(" - %d\t", id);   
+			printf(" - %d\n", score);   // new data send as address
+		}
+	}
 	// receive a message from the server
 	recvfrom(s, msg, sizeof(msg), 0, (struct sockaddr *)&server, &server_address_size);
 	printf("%s\n", msg);

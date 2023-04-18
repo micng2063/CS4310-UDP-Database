@@ -6,7 +6,14 @@
 #include <netdb.h>
 #include <sys/types.h>
 
-main(int argc, char **argv)	{
+struct student {
+   int id;
+   char fName[20];
+   char lName[20];
+   int score;
+};
+
+int main(int argc, char **argv)	{
 	int s, namelen, client_address_size;
 	struct sockaddr_in server, client;
 	
@@ -29,15 +36,47 @@ main(int argc, char **argv)	{
 	recvfrom(s, &num, sizeof(num), 0, (struct sockaddr *)&client, &client_address_size);
 	printf("Integer received: %d\n", num);   
 	
+	// declare a student struct
+	struct student stuData[20] = {	{ 123 , "Michelle" , "McMichelle", 90 } , 
+								{ 133 , "Michael" , "McMichael", 90 } ,   
+								{ 143 , "Mitchell" , "McMitchel", 89 }	};
+	int i = 3;
+	
 	// send a reply message to the client
+
 	if (num == 1) {
 		strcpy(msg, "Adding entry...");
 	}
 	else if (num == 2){
 		strcpy(msg, "Searching entry...");
 	}
-	sendto(s, msg, sizeof(msg), 0, (struct sockaddr *)&client, sizeof(client));
-	
+	else if (num == 4){
+		strcpy(msg, "Displaying database...");
+		
+		int j;
+		
+		int size;
+		size = i;
+		sendto(s, &size, sizeof(size), 0, (struct sockaddr *)&client, sizeof(client));
+
+		for (j = 0; j < i; j++){
+			int id;
+			int score;
+			char msgfName[50];
+			char msglName[50];
+			
+			strcpy(msgfName, stuData[j].fName);
+			strcpy(msglName, stuData[j].lName);
+			id = stuData[j].id;
+			score = stuData[j].score;
+			
+			sendto(s, &id, sizeof(id), 0, (struct sockaddr *)&client, sizeof(client));
+			sendto(s, msgfName, sizeof(msgfName), 0, (struct sockaddr *)&client, sizeof(client));
+			sendto(s, msglName, sizeof(msglName), 0, (struct sockaddr *)&client, sizeof(client));
+			sendto(s, &score, sizeof(score), 0, (struct sockaddr *)&client, sizeof(client));
+		}
+	}
+
 	close(s);
 }
 
