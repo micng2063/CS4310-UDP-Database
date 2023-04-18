@@ -35,7 +35,6 @@ int main(int argc, char **argv)	{
 	
 	// receive an integer from the client
 	recvfrom(s, &num, sizeof(num), 0, (struct sockaddr *)&client, &client_address_size);
-	printf("Integer received: %d\n", num);   
 	
 	// declare a student struct
 	struct student stuData[20] = {	{ 123 , "Michelle" , "McMichelle", 90 } , 
@@ -44,78 +43,80 @@ int main(int argc, char **argv)	{
 	int i = 3;
 	
 	// send a reply message to the client
-
-	if (num == 1) {
-		strcpy(msg, "Adding entry...");
-		int numID;
-		int score;
-		char fName[30];
-		char lName[30];
-		
-		recvfrom(s, &numID, sizeof(numID), 0, (struct sockaddr *)&client, &client_address_size);
-		recvfrom(s, fName, sizeof(fName), 0, (struct sockaddr *)&client, &client_address_size);
-		recvfrom(s, lName, sizeof(lName), 0, (struct sockaddr *)&client, &client_address_size);
-		recvfrom(s, &score, sizeof(score), 0, (struct sockaddr *)&client, &client_address_size);
+	while (ntohl(num) != 6){
+		if (ntohl(num) == 1) {
 			
-		stuData[i].id = numID; // if not set ntohl, num = address
-		strcpy(stuData[i].fName, fName);
-		strcpy(stuData[i].lName, lName);
-		stuData[i].score = score; 
-		i++;
-	}
-	else if (num == 2){
-		strcpy(msg, "Searching entry...");
-		
-		int searchID;
-		recvfrom(s, &searchID, sizeof(searchID), 0, (struct sockaddr *)&client, &client_address_size);
-		bool foundID = false;
-		
-		char msgSearch[50];
-		int j; 
-		for (j = 0; j < i; j++){
-			if (stuData[j].id == searchID)
-			{
-				foundID = true;
-				break;
-			}
-		}
-		if (foundID == true){
-			strcpy(msgSearch, stuData[j].fName);
-			strcat(msgSearch, " ");
-			strcat(msgSearch, stuData[j].lName);
-			strcat(msgSearch, " is found with the matching ID.");
-		}
-		else{
-			strcpy(msgSearch, "ID cannot be found in database.");
-		}
-		
-		sendto(s, &msgSearch, sizeof(msgSearch), 0, (struct sockaddr *)&client, sizeof(client));
-	}
-	else if (num == 4){
-		strcpy(msg, "Displaying database...");
-		
-		int j;
-		
-		int size;
-		size = i;
-		sendto(s, &size, sizeof(size), 0, (struct sockaddr *)&client, sizeof(client));
-
-		for (j = 0; j < i; j++){
 			int numID;
 			int score;
-			char msgfName[50];
-			char msglName[50];
+			char fName[30];
+			char lName[30];
 			
-			strcpy(msgfName, stuData[j].fName);
-			strcpy(msglName, stuData[j].lName);
-			numID = stuData[j].id;
-			score = stuData[j].score;
-			
-			sendto(s, &numID, sizeof(numID), 0, (struct sockaddr *)&client, sizeof(client));
-			sendto(s, msgfName, sizeof(msgfName), 0, (struct sockaddr *)&client, sizeof(client));
-			sendto(s, msglName, sizeof(msglName), 0, (struct sockaddr *)&client, sizeof(client));
-			sendto(s, &score, sizeof(score), 0, (struct sockaddr *)&client, sizeof(client));
+			recvfrom(s, &numID, sizeof(numID), 0, (struct sockaddr *)&client, &client_address_size);
+			recvfrom(s, fName, sizeof(fName), 0, (struct sockaddr *)&client, &client_address_size);
+			recvfrom(s, lName, sizeof(lName), 0, (struct sockaddr *)&client, &client_address_size);
+			recvfrom(s, &score, sizeof(score), 0, (struct sockaddr *)&client, &client_address_size);
+				
+			stuData[i].id = numID; // if not set ntohl, num = address
+			strcpy(stuData[i].fName, fName);
+			strcpy(stuData[i].lName, lName);
+			stuData[i].score = score; 
+			i++;
 		}
+		else if (ntohl(num) == 2){
+			
+			int searchID;
+			recvfrom(s, &searchID, sizeof(searchID), 0, (struct sockaddr *)&client, &client_address_size);
+			bool foundID = false;
+			
+			char msgSearch[50];
+			int j; 
+			for (j = 0; j < i; j++){
+				if (stuData[j].id == searchID)
+				{
+					foundID = true;
+					break;
+				}
+			}
+			if (foundID == true){
+				strcpy(msgSearch, stuData[j].fName);
+				strcat(msgSearch, " ");
+				strcat(msgSearch, stuData[j].lName);
+				strcat(msgSearch, " is found with the matching ID.");
+			}
+			else{
+				strcpy(msgSearch, "ID cannot be found in database.");
+			}
+			
+			sendto(s, &msgSearch, sizeof(msgSearch), 0, (struct sockaddr *)&client, sizeof(client));
+		}
+		else if (num == 4){
+			printf("Displaying database...\n");
+			
+			int j;
+			
+			int size;
+			size = i;
+			sendto(s, &size, sizeof(size), 0, (struct sockaddr *)&client, sizeof(client));
+	
+			for (j = 0; j < i; j++){
+				int numID;
+				int score;
+				char msgfName[50];
+				char msglName[50];
+				
+				strcpy(msgfName, stuData[j].fName);
+				strcpy(msglName, stuData[j].lName);
+				numID = stuData[j].id;
+				score = stuData[j].score;
+				
+				sendto(s, &numID, sizeof(numID), 0, (struct sockaddr *)&client, sizeof(client));
+				sendto(s, msgfName, sizeof(msgfName), 0, (struct sockaddr *)&client, sizeof(client));
+				sendto(s, msglName, sizeof(msglName), 0, (struct sockaddr *)&client, sizeof(client));
+				sendto(s, &score, sizeof(score), 0, (struct sockaddr *)&client, sizeof(client));
+			}
+		}	
+		recvfrom(s, &num, sizeof(num), 0, (struct sockaddr *)&client, &client_address_size);
+
 	}
 
 	close(s);
