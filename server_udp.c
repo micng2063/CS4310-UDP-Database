@@ -43,8 +43,8 @@ int main(int argc, char **argv)	{
 	int i = 3;
 	
 	// send a reply message to the client
-	while (ntohl(num) != 6){
-		if (ntohl(num) == 1) {
+	while (num != 6){
+		if (num == 1) {
 			
 			int numID;
 			int score;
@@ -62,7 +62,7 @@ int main(int argc, char **argv)	{
 			stuData[i].score = score; 
 			i++;
 		}
-		else if (ntohl(num) == 2){
+		else if (num == 2){
 			
 			int searchID;
 			recvfrom(s, &searchID, sizeof(searchID), 0, (struct sockaddr *)&client, &client_address_size);
@@ -90,8 +90,6 @@ int main(int argc, char **argv)	{
 			sendto(s, &msgSearch, sizeof(msgSearch), 0, (struct sockaddr *)&client, sizeof(client));
 		}
 		else if (num == 4){
-			printf("Displaying database...\n");
-			
 			int j;
 			
 			int size;
@@ -115,6 +113,7 @@ int main(int argc, char **argv)	{
 				sendto(s, &score, sizeof(score), 0, (struct sockaddr *)&client, sizeof(client));
 			}
 		}	
+		
 		recvfrom(s, &num, sizeof(num), 0, (struct sockaddr *)&client, &client_address_size);
 
 	}

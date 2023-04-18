@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
 	printf("Enter choice: ");
 	scanf("%d", &num);
 	sendto(s, &num, sizeof(num), 0, (struct sockaddr *)&server, server_address_size);
+	
 	while (num != 6){
 		if (num == 1){
 			int numID;
