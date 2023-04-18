@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <sys/types.h>
+#include <stdbool.h>
 
 struct student {
    int id;
@@ -64,6 +65,31 @@ int main(int argc, char **argv)	{
 	}
 	else if (num == 2){
 		strcpy(msg, "Searching entry...");
+		
+		int searchID;
+		recvfrom(s, &searchID, sizeof(searchID), 0, (struct sockaddr *)&client, &client_address_size);
+		bool foundID = false;
+		
+		char msgSearch[50];
+		int j; 
+		for (j = 0; j < i; j++){
+			if (stuData[j].id == searchID)
+			{
+				foundID = true;
+				break;
+			}
+		}
+		if (foundID == true){
+			strcpy(msgSearch, stuData[j].fName);
+			strcat(msgSearch, " ");
+			strcat(msgSearch, stuData[j].lName);
+			strcat(msgSearch, " is found with the matching ID.");
+		}
+		else{
+			strcpy(msgSearch, "ID cannot be found in database.");
+		}
+		
+		sendto(s, &msgSearch, sizeof(msgSearch), 0, (struct sockaddr *)&client, sizeof(client));
 	}
 	else if (num == 4){
 		strcpy(msg, "Displaying database...");

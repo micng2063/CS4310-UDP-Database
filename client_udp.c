@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <stdbool.h>
 void printMenu(){
 	printf( "-------------------------\n");
 	printf( "- Student Database Menu -\n");
@@ -62,6 +63,16 @@ int main(int argc, char **argv) {
 		printf( "Enter student score: ");
 		scanf("%d", &score);
 		sendto(s, &score, sizeof(score), 0, (struct sockaddr *)&server, server_address_size);
+	}
+	else if (num == 2){
+		int searchID;
+		printf( "Enter ID for searching: ");
+		scanf("%d", &searchID);
+		sendto(s, &searchID, sizeof(searchID), 0, (struct sockaddr *)&server, server_address_size);
+		
+		char msgSearch[100];
+		recvfrom(s, &msgSearch, sizeof(msgSearch), 0, (struct sockaddr *)&server, &server_address_size);
+		printf("%s\n", msgSearch);
 	}
 	else if (num == 4){
 		int size;
