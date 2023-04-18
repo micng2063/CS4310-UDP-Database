@@ -89,6 +89,31 @@ int main(int argc, char **argv)	{
 			
 			sendto(s, &msgSearch, sizeof(msgSearch), 0, (struct sockaddr *)&client, sizeof(client));
 		}
+		else if (num == 3){
+			int searchScore;
+			recvfrom(s, &searchScore, sizeof(searchScore), 0, (struct sockaddr *)&client, &client_address_size);
+			
+			int j;
+			int k = 0;
+			char msgScore[100];
+			strcpy(msgScore, "Student with this or greater than this score: ");
+			
+			for (j = 0; j < i; j++){
+				if (stuData[j].score == searchScore)	{
+					strcat(msgScore, stuData[j].fName);
+					strcat(msgScore, " ");
+					strcat(msgScore, stuData[j].lName);
+					strcat(msgScore, "\t");
+					k++; 
+				}
+			}
+			if (k == 0){
+				strcpy(msgScore, "No students with this score can be found.");
+			}
+			
+			sendto(s, &msgScore, sizeof(msgScore), 0, (struct sockaddr *)&client, sizeof(client));
+			
+		}
 		else if (num == 4){
 			int j;
 			

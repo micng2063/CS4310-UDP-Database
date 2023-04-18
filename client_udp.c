@@ -76,6 +76,16 @@ int main(int argc, char **argv) {
 			recvfrom(s, &msgSearch, sizeof(msgSearch), 0, (struct sockaddr *)&server, &server_address_size);
 			printf("%s\n", msgSearch);
 		}
+		else if (num == 3){
+			int searchScore;
+			printf( "Enter score for searching: ");
+			scanf("%d", &searchScore);
+			sendto(s, &searchScore, sizeof(searchScore), 0, (struct sockaddr *)&server, server_address_size);
+			
+			char msgScore[100];
+			recvfrom(s, &msgScore, sizeof(msgScore), 0, (struct sockaddr *)&server, &server_address_size);
+			printf("%s\n", msgScore);
+		}
 		else if (num == 4){
 			int size;
 			recvfrom(s, &size, sizeof(size), 0, (struct sockaddr *)&server, &server_address_size);
