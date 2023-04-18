@@ -79,7 +79,84 @@ void connectSocket(int newSocket){
 			send(newSocket, msgSearch, sizeof(msgSearch), 0);
 				
 		}
-
+		else if (ntohl(num) == 3){
+			
+			uint32_t searchScore;
+			recv(newSocket, &searchScore, sizeof(searchScore), 0);
+			
+			int j;
+			int k = 0;
+			char msgScore[100];
+			strcpy(msgScore, "Student with this score: ");
+			for (j = 0; j < i; j++){
+				if (stuData[j].score == ntohl(searchScore))	{
+					strcat(msgScore, stuData[j].fName);
+					strcat(msgScore, " ");
+					strcat(msgScore, stuData[j].lName);
+					strcat(msgScore, "\t");
+					k++; 
+				}
+			}
+			if (k == 0){
+				strcpy(msgScore, "No students with this score can be found.");
+			}
+			send(newSocket, msgScore, sizeof(msgScore), 0);
+			
+		}
+		else if(ntohl(num) == 4){
+			int j;
+			
+			uint32_t size, cSize;
+			size = i;
+			cSize = htonl(size); 
+			send(newSocket, &cSize, sizeof(cSize), 0);
+		
+			for (j = 0; j < i; j++){
+				uint32_t id, cID;
+				uint32_t score, cScore;
+				char msgfName[50];
+				char msglName[50];
+				
+				strcpy(msgfName, stuData[j].fName);
+				strcpy(msglName, stuData[j].lName);
+				id = stuData[j].id;
+				cID = htonl(id); 
+				score = stuData[j].score;
+				cScore = htonl(score);
+				
+				send(newSocket, &cID, sizeof(cID), 0);
+				send(newSocket, msgfName, sizeof(msgfName), 0);
+				send(newSocket, msgfName, sizeof(msglName), 0);
+				send(newSocket, &cScore, sizeof(cScore), 0);
+			}
+		}
+		else if (ntohl(num) == 5){
+			uint32_t deleteID;
+			recv(newSocket, &deleteID, sizeof(deleteID), 0);
+			bool foundID = false;
+			
+			int j;
+			int k;
+			for (j = 0; j < i; j++){
+				if (stuData[j].id == ntohl(deleteID))
+				{
+					foundID = true;
+					break;
+				}
+			}
+			if (foundID == true){
+				for (k = j; k < i; k++){
+					char fNameT[30];
+					
+					stuData[k].id = stuData[k+1].id;
+					stuData[k].score = stuData[k+1].score;
+					strcpy(stuData[k].fName, stuData[k+1].fName );
+					strcpy(stuData[k].lName, stuData[k+1].lName );
+				}
+				i--;
+			}
+		}
+		
 		recv(newSocket, &num, sizeof(num), 0);
 	}
 		

@@ -83,7 +83,46 @@ void showMenu(int clientSocket){
 			recv(clientSocket, msgSearch, sizeof(msgSearch), 0);
 			printf("%s\n", msgSearch);
 		}
-
+		else if (num == 3){
+			uint32_t searchID, csearchID;
+			printf( "Enter score for searching: ");
+			scanf("%d", &searchID);
+			csearchID = htonl(searchID);
+			send(clientSocket, &csearchID, sizeof(csearchID), 0);
+			
+			char msgScore[100];
+			recv(clientSocket, msgScore, sizeof(msgScore), 0);
+			printf("%s\n", msgScore);
+		}
+		else if (num == 4){
+			uint32_t size;
+			recv(clientSocket, &size, sizeof(size), 0);  
+			int j;
+			for (j = 0; j < ntohl(size); j++){
+				uint32_t id; 
+				uint32_t score;
+				char msgfName[50];
+				char msglName[50];
+				int order = j + 1;
+				
+				recv(clientSocket, &id, sizeof(id), 0);
+				recv(clientSocket, msgfName, sizeof(msgfName), 0);
+				recv(clientSocket, msglName, sizeof(msglName), 0);
+				recv(clientSocket, &score, sizeof(score), 0);
+				printf("%d .", order);
+				printf("%s ", msgfName);
+				printf("%s \t", msglName);
+				printf(" - %d\t", ntohl(id));   
+				printf(" - %d\n", ntohl(score));   // new data send as address
+			}
+		}
+		else if (num == 5){
+			uint32_t deleteID, cdeleteID;
+			printf( "Enter ID for deletion: ");
+			scanf("%d", &deleteID);
+			cdeleteID = htonl(deleteID);
+			send(clientSocket, &cdeleteID, sizeof(cdeleteID), 0);
+		}		
 		printf("\n");
 		printMenu();
 		printf("Enter choice: ");
