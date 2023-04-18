@@ -45,7 +45,7 @@ int main(int argc, char **argv)	{
 	// send a reply message to the client
 	while (num != 6){
 		if (num == 1) {
-			
+			printf("Adding entry...\n");
 			int numID;
 			int score;
 			char fName[30];
@@ -63,6 +63,7 @@ int main(int argc, char **argv)	{
 			i++;
 		}
 		else if (num == 2){
+			printf("Searching ID...\n");
 			
 			int searchID;
 			recvfrom(s, &searchID, sizeof(searchID), 0, (struct sockaddr *)&client, &client_address_size);
@@ -90,20 +91,25 @@ int main(int argc, char **argv)	{
 			sendto(s, &msgSearch, sizeof(msgSearch), 0, (struct sockaddr *)&client, sizeof(client));
 		}
 		else if (num == 3){
+			printf("Searching score...\n");
+			
 			int searchScore;
 			recvfrom(s, &searchScore, sizeof(searchScore), 0, (struct sockaddr *)&client, &client_address_size);
 			
 			int j;
 			int k = 0;
-			char msgScore[100];
-			strcpy(msgScore, "Student with this or greater than this score: ");
+			char msgScore[200];
+			strcpy(msgScore, "Student with this or greater than this score:\n ");
 			
 			for (j = 0; j < i; j++){
-				if (stuData[j].score == searchScore)	{
+				if (searchScore <= stuData[j].score)	{
+					strcat(msgScore, "- ");
 					strcat(msgScore, stuData[j].fName);
 					strcat(msgScore, " ");
 					strcat(msgScore, stuData[j].lName);
-					strcat(msgScore, "\t");
+					if (j != (i-1)) {
+						strcat(msgScore, "\n");
+					}
 					k++; 
 				}
 			}
@@ -115,8 +121,9 @@ int main(int argc, char **argv)	{
 			
 		}
 		else if (num == 4){
-			int j;
+			printf("Displaying database...\n");
 			
+			int j;
 			int size;
 			size = i;
 			sendto(s, &size, sizeof(size), 0, (struct sockaddr *)&client, sizeof(client));
@@ -139,15 +146,16 @@ int main(int argc, char **argv)	{
 			}
 		}	
 		else if (num == 5){
-			int deleteID;			
+			printf("Deleting entry...\n");
+			
+			int deleteID;	
 			recvfrom(s, &deleteID, sizeof(deleteID), 0, (struct sockaddr *)&client, &client_address_size);
-
 			bool foundID = false;
 			
 			int j;
 			int k;
 			for (j = 0; j < i; j++){
-				if (stuData[j].id == deleteID){
+				if (stuData[j].id == (deleteID)){
 					foundID = true;
 					break;
 				}
@@ -164,11 +172,11 @@ int main(int argc, char **argv)	{
 				i--;
 			}
 		}
-		
+		else if (num < 1 || num > 6 || (!isdigit(num))) {
+			break;
+		}
 		recvfrom(s, &num, sizeof(num), 0, (struct sockaddr *)&client, &client_address_size);
-
 	}
-
 	close(s);
 }
 

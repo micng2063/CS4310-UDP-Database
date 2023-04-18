@@ -10,7 +10,10 @@ void printMenu(){
 	printf( "-------------------------\n");
 	printf( "1. Add Entry\n");
 	printf( "2. Search with ID\n");
+	printf( "3. Search with Score\n");
 	printf( "4. Display Database\n");
+	printf( "5. Delete Entry\n");
+	printf( "6. Exit\n");
 	printf( "-------------------------\n");
 }
 
@@ -82,7 +85,7 @@ int main(int argc, char **argv) {
 			scanf("%d", &searchScore);
 			sendto(s, &searchScore, sizeof(searchScore), 0, (struct sockaddr *)&server, server_address_size);
 			
-			char msgScore[100];
+			char msgScore[200];
 			recvfrom(s, &msgScore, sizeof(msgScore), 0, (struct sockaddr *)&server, &server_address_size);
 			printf("%s\n", msgScore);
 		}
@@ -113,8 +116,12 @@ int main(int argc, char **argv) {
 			int deleteID;
 			printf( "Enter ID for deletion: ");
 			scanf("%d", &deleteID);
+			printf("Delete ID: %d", deleteID);
 			sendto(s, &deleteID, sizeof(deleteID), 0, (struct sockaddr *)&server, server_address_size);
-		}		
+		}
+		else if (num < 1 || num > 6 || (!isdigit(num))) {
+			printf("Invalid input, please enter choice again with a number between 1 and 6.\n");
+		}
 		printf("\n");
 		printMenu();
 		printf("Enter choice: ");
