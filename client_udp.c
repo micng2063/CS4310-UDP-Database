@@ -109,7 +109,12 @@ int main(int argc, char **argv) {
 				printf(" - %d\n", score);   // new data send as address
 			}	
 		}
-		
+		else if (num == 5){
+			int deleteID;
+			printf( "Enter ID for deletion: ");
+			scanf("%d", &deleteID);
+			sendto(s, &deleteID, sizeof(deleteID), 0, (struct sockaddr *)&server, server_address_size);
+		}		
 		printf("\n");
 		printMenu();
 		printf("Enter choice: ");

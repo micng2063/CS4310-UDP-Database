@@ -138,6 +138,32 @@ int main(int argc, char **argv)	{
 				sendto(s, &score, sizeof(score), 0, (struct sockaddr *)&client, sizeof(client));
 			}
 		}	
+		else if (num == 5){
+			int deleteID;			
+			recvfrom(s, &deleteID, sizeof(deleteID), 0, (struct sockaddr *)&client, &client_address_size);
+
+			bool foundID = false;
+			
+			int j;
+			int k;
+			for (j = 0; j < i; j++){
+				if (stuData[j].id == deleteID){
+					foundID = true;
+					break;
+				}
+			}
+			if (foundID == true){
+				for (k = j; k < i; k++){
+					char fNameT[30];
+					
+					stuData[k].id = stuData[k+1].id;
+					stuData[k].score = stuData[k+1].score;
+					strcpy(stuData[k].fName, stuData[k+1].fName );
+					strcpy(stuData[k].lName, stuData[k+1].lName );
+				}
+				i--;
+			}
+		}
 		
 		recvfrom(s, &num, sizeof(num), 0, (struct sockaddr *)&client, &client_address_size);
 
