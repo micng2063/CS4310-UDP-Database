@@ -1,17 +1,18 @@
-/* client_udp.c is on zeus.cs.txstate.edu
-   open a window on zeus.
-   compile:
-   $gcc -o c client_udp.c
-   $./c eros.cs.txstate.edu
-*/
-
 #include <stdio.h>
 #include <netdb.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+void printMenu(){
+	printf( "-------------------------\n");
+	printf( "- Student Database Menu -\n");
+	printf( "-------------------------\n");
+	printf( "1. Add Entry\n");
+	printf( "2. Search with ID\n");
+	printf( "-------------------------\n");
+}
 
-main(int argc, char **argv) {
+void main(int argc, char **argv) {
 	int s, server_address_size;
 	unsigned short port;
 	struct sockaddr_in server;
@@ -35,7 +36,8 @@ main(int argc, char **argv) {
 	server_address_size = sizeof(server);
 	
 	// send an integer to the server
-	printf("Enter an integer: ");
+	printMenu();
+	printf("Enter choice: ");
 	scanf("%d", &num);
 	sendto(s, &num, sizeof(num), 0, (struct sockaddr *)&server, server_address_size);
 	

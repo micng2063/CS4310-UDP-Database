@@ -1,10 +1,3 @@
-/* server_udp.c is on eros.cs.txstate.edu
-   open a window on eros.
-   compile and run the server program first:
-   $gcc -o s server_udp.c
-   $./s
-*/
-
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -33,13 +26,16 @@ main(int argc, char **argv)	{
 	client_address_size = sizeof(client);
 	
 	// receive an integer from the client
-	
 	recvfrom(s, &num, sizeof(num), 0, (struct sockaddr *)&client, &client_address_size);
-	printf("integer received: %d\n", num);   
+	printf("Integer received: %d\n", num);   
 	
 	// send a reply message to the client
-	
-	strcpy(msg, "integer received");
+	if (num == 1) {
+		strcpy(msg, "Adding entry...");
+	}
+	else if (num == 2){
+		strcpy(msg, "Searching entry...");
+	}
 	sendto(s, msg, sizeof(msg), 0, (struct sockaddr *)&client, sizeof(client));
 	
 	close(s);
