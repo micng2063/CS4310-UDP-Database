@@ -46,6 +46,21 @@ int main(int argc, char **argv)	{
 
 	if (num == 1) {
 		strcpy(msg, "Adding entry...");
+		int numID;
+		int score;
+		char fName[30];
+		char lName[30];
+		
+		recvfrom(s, &numID, sizeof(numID), 0, (struct sockaddr *)&client, &client_address_size);
+		recvfrom(s, fName, sizeof(fName), 0, (struct sockaddr *)&client, &client_address_size);
+		recvfrom(s, lName, sizeof(lName), 0, (struct sockaddr *)&client, &client_address_size);
+		recvfrom(s, &score, sizeof(score), 0, (struct sockaddr *)&client, &client_address_size);
+			
+		stuData[i].id = numID; // if not set ntohl, num = address
+		strcpy(stuData[i].fName, fName);
+		strcpy(stuData[i].lName, lName);
+		stuData[i].score = score; 
+		i++;
 	}
 	else if (num == 2){
 		strcpy(msg, "Searching entry...");
@@ -60,17 +75,17 @@ int main(int argc, char **argv)	{
 		sendto(s, &size, sizeof(size), 0, (struct sockaddr *)&client, sizeof(client));
 
 		for (j = 0; j < i; j++){
-			int id;
+			int numID;
 			int score;
 			char msgfName[50];
 			char msglName[50];
 			
 			strcpy(msgfName, stuData[j].fName);
 			strcpy(msglName, stuData[j].lName);
-			id = stuData[j].id;
+			numID = stuData[j].id;
 			score = stuData[j].score;
 			
-			sendto(s, &id, sizeof(id), 0, (struct sockaddr *)&client, sizeof(client));
+			sendto(s, &numID, sizeof(numID), 0, (struct sockaddr *)&client, sizeof(client));
 			sendto(s, msgfName, sizeof(msgfName), 0, (struct sockaddr *)&client, sizeof(client));
 			sendto(s, msglName, sizeof(msglName), 0, (struct sockaddr *)&client, sizeof(client));
 			sendto(s, &score, sizeof(score), 0, (struct sockaddr *)&client, sizeof(client));

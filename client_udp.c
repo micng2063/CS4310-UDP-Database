@@ -41,19 +41,40 @@ int main(int argc, char **argv) {
 	printf("Enter choice: ");
 	scanf("%d", &num);
 	sendto(s, &num, sizeof(num), 0, (struct sockaddr *)&server, server_address_size);
-	
-	if (num == 4){
+	if (num == 1){
+		int numID;
+		int score;
+		char fName[30];
+		char lName[30];
+		
+		printf( "Enter student ID: ");
+		scanf("%d", &numID);
+		sendto(s, &numID, sizeof(numID), 0, (struct sockaddr *)&server, server_address_size);
+		
+		printf( "Enter student's first name: ");
+		scanf("%s", &fName);
+		sendto(s, fName, sizeof(fName), 0, (struct sockaddr *)&server, server_address_size);
+		
+		printf( "Enter student's last name: ");
+		scanf("%s", &lName);
+		sendto(s, lName, sizeof(lName), 0, (struct sockaddr *)&server, server_address_size);
+		
+		printf( "Enter student score: ");
+		scanf("%d", &score);
+		sendto(s, &score, sizeof(score), 0, (struct sockaddr *)&server, server_address_size);
+	}
+	else if (num == 4){
 		int size;
 		recvfrom(s, &size, sizeof(size), 0, (struct sockaddr *)&server, &server_address_size);
 		int j;
 		for (j = 0; j < size; j++){
-			int id; 
+			int numID; 
 			int score;
 			char msgfName[50];
 			char msglName[50];
 			int order = j + 1;
 			
-			recvfrom(s, &id, sizeof(id), 0, (struct sockaddr *)&server, &server_address_size);
+			recvfrom(s, &numID, sizeof(numID), 0, (struct sockaddr *)&server, &server_address_size);
 			recvfrom(s, msgfName, sizeof(msgfName), 0, (struct sockaddr *)&server, &server_address_size);
 			recvfrom(s, msglName, sizeof(msglName), 0, (struct sockaddr *)&server, &server_address_size);
 			recvfrom(s, &score, sizeof(score), 0, (struct sockaddr *)&server, &server_address_size);
@@ -61,7 +82,7 @@ int main(int argc, char **argv) {
 			printf("%d .", order);
 			printf("%s ", msgfName);
 			printf("%s \t", msglName);
-			printf(" - %d\t", id);   
+			printf(" - %d\t", numID);   
 			printf(" - %d\n", score);   // new data send as address
 		}
 	}
