@@ -2,14 +2,14 @@
 # Description:
 - A simple database that stores student information (ID, Name, Score) on host server (Eros) and allows user to add entry, search for ID or score, delete entry, etc. on the client server (Zeus) . This program used UDP as the transfer protocol.
 # Instruction:
-[Transfer files to servers] scp client_udp.c server_udp.c [TXState ID]@eros.cs.txstate.edu:~\
-[Enter Txstate Password]...
-[Open a window on Eros] ssh [TXState ID]@eros.cs.txstate.edu
-[Open a window on Zeus] ssh [TXState ID]@zeus.cs.txstate.edu
-[Compile and run the following on Eros first]
+1. [Transfer files to servers] scp client_udp.c server_udp.c [TXState ID]@eros.cs.txstate.edu:~\
+2. [Enter Txstate Password]...
+3. [Open a window on Eros] ssh [TXState ID]@eros.cs.txstate.edu
+4. [Open a window on Zeus] ssh [TXState ID]@zeus.cs.txstate.edu
+5. [Compile and run the following on Eros first]
 gcc -o s server_udp.c
 ./s
-[Combine and run the following on Zeus]
+6. [Combine and run the following on Zeus]
 gcc -o c client_udp.c
 ./c eros.cs.txstate.edu
 
