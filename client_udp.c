@@ -87,12 +87,16 @@ int main(int argc, char **argv) {
 			
 			char msgScore[200];
 			recvfrom(s, &msgScore, sizeof(msgScore), 0, (struct sockaddr *)&server, &server_address_size);
-			printf("%s\n", msgScore);
+			printf("%s", msgScore);
 		}
 		else if (num == 4){
 			int size;
 			recvfrom(s, &size, sizeof(size), 0, (struct sockaddr *)&server, &server_address_size);
 			int j;
+			
+			printf("=========================================\n");
+			printf("#\tNAME\t\tID\t SCORE\n");
+			printf("=========================================\n");
 			for (j = 0; j < size; j++){
 				int numID; 
 				int score;
@@ -105,9 +109,9 @@ int main(int argc, char **argv) {
 				recvfrom(s, msglName, sizeof(msglName), 0, (struct sockaddr *)&server, &server_address_size);
 				recvfrom(s, &score, sizeof(score), 0, (struct sockaddr *)&server, &server_address_size);
 				
-				printf("%d .", order);
-				printf("%s ", msgfName);
-				printf("%s \t", msglName);
+				printf("%d. ", order);
+				printf("%s, ", msglName);
+				printf("%s\t", msgfName);
 				printf(" - %d\t", numID);   
 				printf(" - %d\n", score);   // new data send as address
 			}	
@@ -116,10 +120,9 @@ int main(int argc, char **argv) {
 			int deleteID;
 			printf( "Enter ID for deletion: ");
 			scanf("%d", &deleteID);
-			printf("Delete ID: %d", deleteID);
 			sendto(s, &deleteID, sizeof(deleteID), 0, (struct sockaddr *)&server, server_address_size);
 		}
-		else if (num < 1 || num > 6 || (!isdigit(num))) {
+		else if (num < 1 || num > 6) {
 			printf("Invalid input, please enter choice again with a number between 1 and 6.\n");
 		}
 		printf("\n");

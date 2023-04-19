@@ -41,9 +41,11 @@ int main(int argc, char **argv)	{
 								{ 133 , "Michael" , "McMichael", 90 } ,   
 								{ 143 , "Mitchell" , "McMitchel", 89 }	};
 	int i = 3;
+	printf("0. Starting communication...\n");
+	int step = 1;
 	
-	// send a reply message to the client
 	while (num != 6){
+		printf("%d. ", step);
 		if (num == 1) {
 			printf("Adding entry...\n");
 			int numID;
@@ -99,7 +101,7 @@ int main(int argc, char **argv)	{
 			int j;
 			int k = 0;
 			char msgScore[200];
-			strcpy(msgScore, "Student with this or greater than this score:\n ");
+			strcpy(msgScore, "Student with this or greater than this score:\n");
 			
 			for (j = 0; j < i; j++){
 				if (searchScore <= stuData[j].score)	{
@@ -172,11 +174,16 @@ int main(int argc, char **argv)	{
 				i--;
 			}
 		}
-		else if (num < 1 || num > 6 || (!isdigit(num))) {
+		else if (num < 1 || num > 6 ) {
 			break;
 		}
+		
+		step++;
 		recvfrom(s, &num, sizeof(num), 0, (struct sockaddr *)&client, &client_address_size);
 	}
+	
+	printf("%d. Closing communication...\n", step);
+	
 	close(s);
 }
 
