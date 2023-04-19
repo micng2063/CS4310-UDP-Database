@@ -13,9 +13,9 @@ gcc -o s server_udp.c
 gcc -o c client_udp.c
 ./c eros.cs.txstate.edu
 
-#README: 
+# README:
 - Program is partially incomplete and does not include:
-- a function that read student information from text file.
-- a function that check whether input information is correct type (int, char)
-- a function that mallocate new size of struct object.
+1. a function that read student information from text file.
+2. a function that check whether input information is correct type (int, char)
+3 a function that mallocate new size of struct object.
 
