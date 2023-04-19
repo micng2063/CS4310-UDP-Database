@@ -19,5 +19,5 @@ gcc -o c client_udp.c
 2. a function that check whether input information is correct type (int, char)
 3. a function that mallocate new size of struct object.
 
-![Client program](http://url/to/img.png](https://i.imgur.com/Fku1Z76.png)
-![Server program](http://url/to/img.png](https://i.imgur.com/ddNQ4iM.png)
+![Client program](https://i.imgur.com/Fku1Z76.png)
+![Server program](https://i.imgur.com/ddNQ4iM.png)
