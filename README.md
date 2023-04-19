@@ -13,25 +13,9 @@ gcc -o s server_udp.c
 gcc -o c client_udp.c
 ./c eros.cs.txstate.edu
 
-#README: Program is partially incomplete and does not include:
+#README: 
+Program is partially incomplete and does not include:
 - a function that read student information from text file.
 - a function that check whether input information is correct type (int, char)
 - a function that mallocate new size of struct object.
 
-/***************Server program**************************/
-
-/* server_udp.c is on eros.cs.txstate.edu
-  open a window on eros.
-  compile and run the server program first:
-  $gcc -o s server_udp.c
-  $./s
-*/
-
-/****************Client program********************************/
-
-/* client_udp.c is on zeus.cs.txstate.edu
-  open a window on zeus.
-  compile:
-  $gcc -o c client_udp.c
-  $./c eros.cs.txstate.edu
-*/
