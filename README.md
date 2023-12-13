@@ -1,5 +1,6 @@
 # CS 4310: Project 2: Student Database with UDP
 # Description:
+- Course: CS 4310 - Computer Networks | Instructor: Dr. Xiao Chen, Associate Professor
 - A simple database that stores student information (ID, Name, Score) on host server (Eros) and allows user to add entry, search for ID or score, delete entry, etc. on the client server (Zeus) . This program used UDP as the transfer protocol.
 # Instruction:
 1. [Transfer files to servers] scp client_udp.c server_udp.c [TXState ID]@eros.cs.txstate.edu:~\
